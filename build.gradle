@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Elasticsearch
+    implementation 'co.elastic.clients:elasticsearch-java:8.10.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+
+    // OpenTelemetry
+    implementation 'io.opentelemetry:opentelemetry-api:1.31.0'
+    implementation 'io.opentelemetry:opentelemetry-sdk:1.31.0'
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp:1.31.0'
+    implementation 'io.opentelemetry.semconv:opentelemetry-semconv:1.21.0-alpha'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
+test {
+    useJUnitPlatform()
+}
