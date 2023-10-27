@@ -10,8 +10,12 @@ repositories {
 }
 
 dependencies {
-    // Elasticsearch
-    implementation 'co.elastic.clients:elasticsearch-java:8.10.0'
+    // Elasticsearch 8.9.0 (WITHOUT baked-in instrumentation)
+    implementation 'co.elastic.clients:elasticsearch-java:8.9.0'
+
+    // Elasticsearch 8.10.0 (WITH baked-in instrumentation)
+    //implementation 'co.elastic.clients:elasticsearch-java:8.10.0'
+
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
 
     // OpenTelemetry

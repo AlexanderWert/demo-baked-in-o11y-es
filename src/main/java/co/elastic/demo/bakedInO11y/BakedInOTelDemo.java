@@ -35,12 +35,14 @@ import java.util.stream.Collectors;
 
 public class BakedInOTelDemo {
 
+    //region Constants
     private static final String[] NAMES = {"Alex", "Emily", "Gil"};
     private static final String ES_ENDPOINT_KEY = "elasticsearch_url";
     private static final String ES_PASSWORD_KEY = "elasticsearch_pw";
     private static final String ES_USER_KEY = "elasticsearch_user";
     private static final String OTLP_ENDPOINT_KEY = "otlp_endpoint";
     private static final String OTLP_SECRET_TOKEN_KEY = "otlp-secret-token";
+    //endregion
 
     public static void main(String[] args) throws IOException {
         BakedInOTelDemo demo = new BakedInOTelDemo();
@@ -48,13 +50,16 @@ public class BakedInOTelDemo {
         demo.close();
     }
 
+    // region Class members
     private final ResourceBundle resourceBundle;
     private RestClient restClient;
     private final ElasticsearchClient esClient;
     private OpenTelemetrySdk openTelemetry;
     private Tracer otelTracer;
     private final Random rand = new Random(System.currentTimeMillis());
+    // endregion
 
+    // region Initialization & Clean-up
     private BakedInOTelDemo() {
         resourceBundle = ResourceBundle.getBundle("config");
         initOtel();
@@ -100,26 +105,24 @@ public class BakedInOTelDemo {
 
         return new ElasticsearchClient(new RestClientTransport(restClient, new JacksonJsonpMapper()));
     }
-
     private void close() throws IOException {
         restClient.close();
         esClient.shutdown();
         openTelemetry.close();
     }
+    // endregion
 
     private void run() throws IOException {
-        Span rootSpan = otelTracer.spanBuilder("Demo run()").startSpan();
+        Span rootSpan = otelTracer.spanBuilder("Demo run").startSpan();
         try (Scope ss = rootSpan.makeCurrent()) {
-            // ------------------------------------------------
-            // Doing some Elasticsearch requests
-            // ------------------------------------------------
+            // region Method logic
             indexDocument();
             List<String> ids = searchDocuments();
             if (!ids.isEmpty()) {
                 Doc doc = getDocument(ids.get(0));
                 System.out.println("First Document:" + doc);
             }
-            // ------------------------------------------------
+            // endregion
         } finally {
             rootSpan.end();
         }
